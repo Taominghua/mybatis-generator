@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!--
+mvn clean install;mvn mybatis-generator:generate
+-->
+<generatorConfiguration>
+    <context id="ActivityTables" targetRuntime="com.enterprise.generator.SpringDataSimpleImpl">
+        <commentGenerator type="com.enterprise.generator.EnterpriseCommentGenerator">
+            <!-- set suppressAllComments will case the xmpmapper don't merged automatic.-->
+            <!--<property name="suppressAllComments" value="false" />-->
+            <property name="suppressDate" value="true"/>
+            <!--<property name="detailComment" value="true"/>-->
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://10.40.12.18:3366/dbshouhuo?relaxAutoCommit=true&amp;zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true"
+                        userId="liepaiuser"
+                        password="liepaipwd">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="domain" targetProject="src/test/java">
+            <!--<property name="enableSubPackages" value="true" />-->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mybatis-generator" targetProject="src/test/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="dao" targetProject="src/test/java">
+            <!--<property name="enableSubPackages" value="true" />-->
+        </javaClientGenerator>
+
+        <table tableName="business_compensation_processor" domainObjectName="BusinessCompensationProcessor">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table tableName="8dol_fixed_assets_change_log" domainObjectName="FixedAssetsChangeLog">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <!--<table tableName="sssss" domainObjectName="SSSSS">-->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>

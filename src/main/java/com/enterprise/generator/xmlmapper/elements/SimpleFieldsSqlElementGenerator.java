@@ -51,7 +51,7 @@ public class SimpleFieldsSqlElementGenerator extends AbstractXmlElementGenerator
         boolean hasOrderBy = StringUtility.stringHasValue(orderByClause);
         if (hasOrderBy) {
             sb.setLength(0);
-            sb.append("order by ");
+            sb.append("ORDER BY ");
             sb.append(orderByClause);
             answer.addElement(new TextElement(sb.toString()));
         }

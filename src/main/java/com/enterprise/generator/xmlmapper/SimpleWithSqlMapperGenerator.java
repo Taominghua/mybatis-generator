@@ -1,17 +1,15 @@
 package com.enterprise.generator.xmlmapper;
 
 
-import com.enterprise.generator.xmlmapper.elements.BatchInsertElementGenerator;
-import com.enterprise.generator.xmlmapper.elements.CustomInsertElementGenerator;
-import com.enterprise.generator.xmlmapper.elements.SelectByBeanWithoutBLOBsGenerator;
-import com.enterprise.generator.xmlmapper.elements.SimpleFieldsSqlElementGenerator;
+import com.enterprise.generator.xmlmapper.elements.*;
 import org.mybatis.generator.api.FullyQualifiedTable;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.AbstractXmlGenerator;
 import org.mybatis.generator.codegen.XmlConstants;
-import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.*;
+import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.AbstractXmlElementGenerator;
+import org.mybatis.generator.codegen.mybatis3.xmlmapper.elements.ResultMapWithoutBLOBsElementGenerator;
 
 import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
@@ -40,10 +38,12 @@ public class SimpleWithSqlMapperGenerator extends AbstractXmlGenerator {
 //        addDeleteByPrimaryKeyElement(answer);
 //        addUpdateByPrimaryKeyElement(answer);
 
+
         //自定义
 //        addBatchInsertElement(answer);
-        addInsertElement(answer);
-//        addQueryByBeanElement(answer);
+//        addInsertElement(answer);
+        addInsertSelectiveElement(answer);
+//        addSelectByEntityWhereElement(answer);
 //        addFieldsSqlElement(answer);
 
         return answer;
@@ -59,26 +59,26 @@ public class SimpleWithSqlMapperGenerator extends AbstractXmlGenerator {
 
     protected void addSelectByPrimaryKeyElement(XmlElement parentElement) {
         if (introspectedTable.getRules().generateSelectByPrimaryKey()) {
-            AbstractXmlElementGenerator elementGenerator = new SimpleSelectByPrimaryKeyElementGenerator();
+            AbstractXmlElementGenerator elementGenerator = new CustomSelectByPrimaryKeyElementGenerator();
             initializeAndExecuteGenerator(elementGenerator, parentElement);
         }
     }
 
     protected void addSelectAllElement(XmlElement parentElement) {
-        AbstractXmlElementGenerator elementGenerator = new SimpleSelectAllElementGenerator();
+        AbstractXmlElementGenerator elementGenerator = new CustomSelectAllElementGenerator();
         initializeAndExecuteGenerator(elementGenerator, parentElement);
     }
 
     protected void addDeleteByPrimaryKeyElement(XmlElement parentElement) {
         if (introspectedTable.getRules().generateDeleteByPrimaryKey()) {
-            AbstractXmlElementGenerator elementGenerator = new DeleteByPrimaryKeyElementGenerator(true);
+            AbstractXmlElementGenerator elementGenerator = new CustomDeleteByPrimaryKeyElementGenerator(true);
             initializeAndExecuteGenerator(elementGenerator, parentElement);
         }
     }
 
     protected void addUpdateByPrimaryKeyElement(XmlElement parentElement) {
         if (introspectedTable.getRules().generateUpdateByPrimaryKeySelective()) {
-            AbstractXmlElementGenerator elementGenerator = new UpdateByPrimaryKeyWithoutBLOBsElementGenerator(true);
+            AbstractXmlElementGenerator elementGenerator = new CustomUpdateByPrimaryKeyWithoutBLOBsElementGenerator(true);
             initializeAndExecuteGenerator(elementGenerator, parentElement);
         }
     }
@@ -97,7 +97,14 @@ public class SimpleWithSqlMapperGenerator extends AbstractXmlGenerator {
         }
     }
 
-    protected void addQueryByBeanElement(XmlElement parentElement) {
+    protected void addInsertSelectiveElement(XmlElement parentElement) {
+        if (introspectedTable.getRules().generateInsert()) {
+            AbstractXmlElementGenerator elementGenerator = new CustomInsertSelectiveElementGenerator();
+            initializeAndExecuteGenerator(elementGenerator, parentElement);
+        }
+    }
+
+    protected void addSelectByEntityWhereElement(XmlElement parentElement) {
         AbstractXmlElementGenerator elementGenerator = new SelectByBeanWithoutBLOBsGenerator();
         initializeAndExecuteGenerator(elementGenerator, parentElement);
 

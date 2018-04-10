@@ -66,9 +66,9 @@ public class CustomInsertElementGenerator extends AbstractXmlElementGenerator {
         while (iter.hasNext()) {
             IntrospectedColumn next = (IntrospectedColumn) iter.next();
             //如果主键是String就需要将id拼到insert语句中；如果主键是Integer并且是自增就不需要拼到insert语句中
-            List<String> needGeneratedKeyJavaTypeList = Arrays.asList(new String[]{"java.lang.Integer", "java.lang.Long"});
+            List<String> needSpellIdIntoInsertJavaTypeList = Arrays.asList(new String[]{"java.lang.Integer", "java.lang.Long"});
 
-            if (!(next.isIdentity() && next.isAutoIncrement() && needGeneratedKeyJavaTypeList.contains(next.getFullyQualifiedJavaType().getFullyQualifiedName()))) {
+            if (!(next.isIdentity() && next.isAutoIncrement() && needSpellIdIntoInsertJavaTypeList.contains(next.getFullyQualifiedJavaType().getFullyQualifiedName()))) {
                 if (next.getJdbcTypeName() != null && Arrays.asList("TIMESTAMP", "TIME", "DATE").contains(next.getJdbcTypeName().toUpperCase())
                         && next.getDefaultValue() != null && !next.getDefaultValue().toUpperCase().equals("NULL")) {
                     if (!iter.hasNext() && insertClause1.substring(insertClause1.length() - 2).equals(", ")) {

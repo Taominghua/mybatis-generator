@@ -68,10 +68,13 @@ public class BatchInsertElementGenerator extends AbstractXmlElementGenerator {
         Iterator iter = this.introspectedTable.getAllColumns().iterator();
 
         while (iter.hasNext()) {
-            IntrospectedColumn i$ = (IntrospectedColumn) iter.next();
-            if (!i$.isIdentity()) {
-                insertClause1.append(MyBatis3FormattingUtilities.getEscapedColumnName(i$));
-                valuesClause.append(MyBatis3FormattingUtilities.getParameterClause(i$, "item."));
+            IntrospectedColumn next = (IntrospectedColumn) iter.next();
+            //如果主键是String就需要将id拼到insert语句中；如果主键是Integer并且是自增就不需要拼到insert语句中
+            List<String> needSpellIdIntoInsertJavaTypeList = Arrays.asList(new String[]{"java.lang.Integer", "java.lang.Long"});
+
+            if (!(next.isIdentity() && next.isAutoIncrement() && needSpellIdIntoInsertJavaTypeList.contains(next.getFullyQualifiedJavaType().getFullyQualifiedName()))) {
+                insertClause1.append(MyBatis3FormattingUtilities.getEscapedColumnName(next));
+                valuesClause.append(MyBatis3FormattingUtilities.getParameterClause(next, "item."));
                 if (iter.hasNext()) {
                     insertClause1.append(", ");
                     valuesClause.append(", ");

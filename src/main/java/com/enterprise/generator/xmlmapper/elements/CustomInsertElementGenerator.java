@@ -45,7 +45,7 @@ public class CustomInsertElementGenerator extends AbstractXmlElementGenerator {
                     answer.addAttribute(new Attribute("useGeneratedKeys", "true"));
                     answer.addAttribute(new Attribute("keyProperty", insertClause.getJavaProperty()));
                 } else {
-                    //只有表主键字段映射成java类型是Integer或者Long，并且是自增列的时候才会生成自增xml；如果表自由一个id字段，那么在insert里面则什么都不生成
+                    //只有表主键字段映射成java类型是Integer或者Long，并且是自增列的时候才会生成自增xml；如果表只有一个id字段，那么在insert里面则什么都不生成
                     List<String> needGeneratedKeyJavaTypeList = Arrays.asList(new String[]{"java.lang.Integer", "java.lang.Long"});
                     if (needGeneratedKeyJavaTypeList.contains(insertClause.getFullyQualifiedJavaType().getFullyQualifiedName()) && insertClause.isAutoIncrement()) {
                         answer.addElement(this.getSelectKey(insertClause, gk));
@@ -65,7 +65,10 @@ public class CustomInsertElementGenerator extends AbstractXmlElementGenerator {
 
         while (iter.hasNext()) {
             IntrospectedColumn next = (IntrospectedColumn) iter.next();
-            if (!next.isIdentity()) {
+            //如果主键是String就需要将id拼到insert语句中；如果主键是Integer并且是自增就不需要拼到insert语句中
+            List<String> needGeneratedKeyJavaTypeList = Arrays.asList(new String[]{"java.lang.Integer", "java.lang.Long"});
+
+            if (!(next.isIdentity() && next.isAutoIncrement() && needGeneratedKeyJavaTypeList.contains(next.getFullyQualifiedJavaType().getFullyQualifiedName()))) {
                 if (next.getJdbcTypeName() != null && Arrays.asList("TIMESTAMP", "TIME", "DATE").contains(next.getJdbcTypeName().toUpperCase())
                         && next.getDefaultValue() != null && !next.getDefaultValue().toUpperCase().equals("NULL")) {
                     if (!iter.hasNext() && insertClause1.substring(insertClause1.length() - 2).equals(", ")) {

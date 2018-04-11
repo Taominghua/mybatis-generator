@@ -38,10 +38,15 @@ public class EmptyJavaClientGenerator extends AbstractJavaClientGenerator {
         Interface interfaze = new Interface(type);
         interfaze.setVisibility(JavaVisibility.PUBLIC);
 
-        FullyQualifiedJavaType javaType = new FullyQualifiedJavaType("com.enterprise.data.mapper.CrudMapper");
-        interfaze.addImportedType(javaType);
+        String importPackage = "com.enterprise.data.mapper.CrudMapper";
+        FullyQualifiedJavaType javaType = new FullyQualifiedJavaType(importPackage.substring(importPackage.lastIndexOf(".") + 1, importPackage.length()));
+        interfaze.addImportedType(new FullyQualifiedJavaType(importPackage));
 
-        javaType.addTypeArgument(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
+        String importDomainPackage = introspectedTable.getBaseRecordType();
+        interfaze.addImportedType(new FullyQualifiedJavaType(importDomainPackage));
+
+
+        javaType.addTypeArgument(new FullyQualifiedJavaType(importDomainPackage.substring(importDomainPackage.lastIndexOf(".") + 1, importDomainPackage.length())));
 
         // 根据数据库主键字段类型判断接口类操作的java类型,因为不同的表主键可能是不同的jdbcType,所以需要根据自己的需求进行扩展
         List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();

@@ -119,8 +119,7 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
         }
 
 
-        if (context.getPlugins().modelBaseRecordClassGenerated(topLevelClass,
-                introspectedTable)) {
+        if (context.getPlugins().modelBaseRecordClassGenerated(topLevelClass, introspectedTable)) {
             answer.add(topLevelClass);
         }
         return answer;

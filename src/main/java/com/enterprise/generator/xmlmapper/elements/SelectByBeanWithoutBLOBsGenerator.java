@@ -22,7 +22,7 @@ public class SelectByBeanWithoutBLOBsGenerator extends AbstractXmlElementGenerat
 
         XmlElement answer = new XmlElement("select");
 
-        answer.addAttribute(new Attribute("id", "selectByEntityWhere"));
+        answer.addAttribute(new Attribute("id", "listByEntityWhere"));
         answer.addAttribute(new Attribute("resultMap", introspectedTable.getBaseResultMapId()));
         FullyQualifiedJavaType parameterType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
 

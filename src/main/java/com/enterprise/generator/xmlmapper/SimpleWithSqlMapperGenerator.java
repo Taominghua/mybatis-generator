@@ -31,24 +31,29 @@ public class SimpleWithSqlMapperGenerator extends AbstractXmlGenerator {
 
         context.getCommentGenerator().addRootComment(answer);
 
-        //auto-generator
-//        addResultMapElement(answer);
-//        addSelectByPrimaryKeyElement(answer);
-//        addSelectAllElement(answer);
-//        addDeleteByPrimaryKeyElement(answer);
-//        addUpdateByPrimaryKeyElement(answer);
+        //init
+        addResultMapElement(answer);
+        addFieldsSqlElement(answer);
 
-
-        //自定义
-//        addBatchInsertElement(answer);
-//        addInsertElement(answer);
+        //add
+        addInsertElement(answer);
         addInsertSelectiveElement(answer);
-//        addSelectByEntityWhereElement(answer);
-//        addFieldsSqlElement(answer);
+        addBatchInsertElement(answer);
+
+        //delete
+        addDeleteByPrimaryKeyElement(answer);
+
+        //update
+        addUpdateByPrimaryKeyElement(answer);
+        addUpdateSelectiveElement(answer);
+
+        //select
+        addSelectAllElement(answer);
+        addSelectByPrimaryKeyElement(answer);
+        addSelectByEntityWhereElement(answer);
 
         return answer;
     }
-
 
     protected void addResultMapElement(XmlElement parentElement) {
         if (introspectedTable.getRules().generateBaseResultMap()) {
@@ -57,16 +62,25 @@ public class SimpleWithSqlMapperGenerator extends AbstractXmlGenerator {
         }
     }
 
-    protected void addSelectByPrimaryKeyElement(XmlElement parentElement) {
-        if (introspectedTable.getRules().generateSelectByPrimaryKey()) {
-            AbstractXmlElementGenerator elementGenerator = new CustomSelectByPrimaryKeyElementGenerator();
+    protected void addInsertElement(XmlElement parentElement) {
+        if (introspectedTable.getRules().generateInsert()) {
+            AbstractXmlElementGenerator elementGenerator = new CustomInsertElementGenerator(true);
             initializeAndExecuteGenerator(elementGenerator, parentElement);
         }
     }
 
-    protected void addSelectAllElement(XmlElement parentElement) {
-        AbstractXmlElementGenerator elementGenerator = new CustomSelectAllElementGenerator();
-        initializeAndExecuteGenerator(elementGenerator, parentElement);
+    protected void addInsertSelectiveElement(XmlElement parentElement) {
+        if (introspectedTable.getRules().generateInsertSelective()) {
+            AbstractXmlElementGenerator elementGenerator = new CustomInsertSelectiveElementGenerator();
+            initializeAndExecuteGenerator(elementGenerator, parentElement);
+        }
+    }
+
+    protected void addBatchInsertElement(XmlElement parentElement) {
+        if (introspectedTable.getRules().generateInsert()) {
+            AbstractXmlElementGenerator elementGenerator = new BatchInsertElementGenerator(true);
+            initializeAndExecuteGenerator(elementGenerator, parentElement);
+        }
     }
 
     protected void addDeleteByPrimaryKeyElement(XmlElement parentElement) {
@@ -83,31 +97,29 @@ public class SimpleWithSqlMapperGenerator extends AbstractXmlGenerator {
         }
     }
 
-    protected void addBatchInsertElement(XmlElement parentElement) {
-        if (introspectedTable.getRules().generateInsert()) {
-            AbstractXmlElementGenerator elementGenerator = new BatchInsertElementGenerator(true);
+    protected void addUpdateSelectiveElement(XmlElement parentElement) {
+        if (introspectedTable.getRules().generateUpdateByExampleSelective()) {
+            AbstractXmlElementGenerator elementGenerator = new CustomUpdateBySelectiveElementGenerator();
             initializeAndExecuteGenerator(elementGenerator, parentElement);
         }
     }
 
-    protected void addInsertElement(XmlElement parentElement) {
-        if (introspectedTable.getRules().generateInsert()) {
-            AbstractXmlElementGenerator elementGenerator = new CustomInsertElementGenerator(true);
+    protected void addSelectAllElement(XmlElement parentElement) {
+        AbstractXmlElementGenerator elementGenerator = new CustomSelectAllElementGenerator();
+        initializeAndExecuteGenerator(elementGenerator, parentElement);
+    }
+
+    protected void addSelectByPrimaryKeyElement(XmlElement parentElement) {
+        if (introspectedTable.getRules().generateSelectByPrimaryKey()) {
+            AbstractXmlElementGenerator elementGenerator = new CustomSelectByPrimaryKeyElementGenerator();
             initializeAndExecuteGenerator(elementGenerator, parentElement);
         }
     }
 
-    protected void addInsertSelectiveElement(XmlElement parentElement) {
-        if (introspectedTable.getRules().generateInsert()) {
-            AbstractXmlElementGenerator elementGenerator = new CustomInsertSelectiveElementGenerator();
-            initializeAndExecuteGenerator(elementGenerator, parentElement);
-        }
-    }
 
     protected void addSelectByEntityWhereElement(XmlElement parentElement) {
         AbstractXmlElementGenerator elementGenerator = new SelectByBeanWithoutBLOBsGenerator();
         initializeAndExecuteGenerator(elementGenerator, parentElement);
-
     }
 
     private void addFieldsSqlElement(XmlElement parentElement) {

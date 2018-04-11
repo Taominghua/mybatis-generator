@@ -45,9 +45,5 @@ mvn clean install;mvn mybatis-generator:generate
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <!--<table tableName="sssss" domainObjectName="SSSSS">-->
-        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
-        <!--</table>-->
-
     </context>
 </generatorConfiguration>

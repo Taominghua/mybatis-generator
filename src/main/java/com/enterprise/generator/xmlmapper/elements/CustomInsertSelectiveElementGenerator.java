@@ -1,5 +1,6 @@
 package com.enterprise.generator.xmlmapper.elements;
 
+import com.enterprise.generator.common.ParameterGenerate;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.xml.Attribute;
@@ -86,7 +87,7 @@ public class CustomInsertSelectiveElementGenerator extends AbstractXmlElementGen
                 insertTrimElement.addElement(new TextElement(sb.toString()));
 
                 sb.setLength(0);
-                sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
+                sb.append(ParameterGenerate.getInstance().getParameterClause(introspectedColumn,null));
                 sb.append(',');
                 valuesTrimElement.addElement(new TextElement(sb.toString()));
 
@@ -116,7 +117,7 @@ public class CustomInsertSelectiveElementGenerator extends AbstractXmlElementGen
             valuesNotNullElement.addAttribute(new Attribute("test", sb.toString()));
 
             sb.setLength(0);
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
+            sb.append(ParameterGenerate.getInstance().getParameterClause(introspectedColumn,null));
             sb.append(',');
             valuesNotNullElement.addElement(new TextElement(sb.toString()));
             valuesTrimElement.addElement(valuesNotNullElement);
@@ -133,7 +134,7 @@ public class CustomInsertSelectiveElementGenerator extends AbstractXmlElementGen
         if (needSpellEmptyStringJavaTypeList.contains(introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName())) {
             sb.append(introspectedColumn.getJavaProperty()).append(" != null");
         } else if ("java.lang.String".equals(introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName())) {
-            sb.append(introspectedColumn.getJavaProperty().concat(" != null AND " + introspectedColumn.getJavaProperty() + " != ''"));
+            sb.append(introspectedColumn.getJavaProperty().concat(" != null and " + introspectedColumn.getJavaProperty() + " != ''"));
         } else {
             sb.append(introspectedColumn.getJavaProperty()).append(" != null");
         }

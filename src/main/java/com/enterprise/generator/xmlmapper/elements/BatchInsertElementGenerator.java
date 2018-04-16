@@ -1,5 +1,6 @@
 package com.enterprise.generator.xmlmapper.elements;
 
+import com.enterprise.generator.common.ParameterGenerate;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.OutputUtilities;
 import org.mybatis.generator.api.dom.xml.Attribute;
@@ -74,7 +75,7 @@ public class BatchInsertElementGenerator extends AbstractXmlElementGenerator {
 
             if (!(next.isIdentity() && next.isAutoIncrement() && needSpellIdIntoInsertJavaTypeList.contains(next.getFullyQualifiedJavaType().getFullyQualifiedName()))) {
                 insertClause1.append(MyBatis3FormattingUtilities.getEscapedColumnName(next));
-                valuesClause.append(MyBatis3FormattingUtilities.getParameterClause(next, "item."));
+                valuesClause.append(ParameterGenerate.getInstance().getParameterClause(next, "item."));
                 if (iter.hasNext()) {
                     insertClause1.append(", ");
                     valuesClause.append(", ");

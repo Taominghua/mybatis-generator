@@ -1,5 +1,6 @@
 package com.enterprise.generator.xmlmapper.elements;
 
+import com.enterprise.generator.common.ParameterGenerate;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.xml.Attribute;
@@ -18,6 +19,7 @@ import java.util.List;
  * @author tommy
  */
 public class CustomInsertElementGenerator extends AbstractXmlElementGenerator {
+
     private boolean isSimple;
 
     public CustomInsertElementGenerator(boolean isSimple) {
@@ -79,7 +81,8 @@ public class CustomInsertElementGenerator extends AbstractXmlElementGenerator {
                 }
 
                 insertClause1.append(MyBatis3FormattingUtilities.getEscapedColumnName(next));
-                valuesClause.append(MyBatis3FormattingUtilities.getParameterClause(next));
+//                valuesClause.append(MyBatis3FormattingUtilities.getParameterClause(next));
+                valuesClause.append(ParameterGenerate.getInstance().getParameterClause(next, null));
                 if (iter.hasNext()) {
                     insertClause1.append(", ");
                     valuesClause.append(", ");

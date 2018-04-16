@@ -37,11 +37,15 @@ mvn clean install;mvn mybatis-generator:generate
             <!--<property name="enableSubPackages" value="true" />-->
         </javaClientGenerator>
 
-        <table tableName="business_compensation_processor" domainObjectName="BusinessCompensationProcessor">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        <!--<table tableName="business_compensation_processor" domainObjectName="BusinessCompensationProcessor">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
 
-        <table tableName="8dol_fixed_assets_change_log" domainObjectName="FixedAssetsChangeLog">
+        <!--<table tableName="8dol_fixed_assets_change_log" domainObjectName="FixedAssetsChangeLog">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--</table>-->
+
+        <table tableName="t_user" domainObjectName="User">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 

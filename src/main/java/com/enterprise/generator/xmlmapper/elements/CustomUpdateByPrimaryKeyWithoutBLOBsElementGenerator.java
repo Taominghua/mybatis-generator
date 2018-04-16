@@ -1,5 +1,6 @@
 package com.enterprise.generator.xmlmapper.elements;
 
+import com.enterprise.generator.common.ParameterGenerate;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.OutputUtilities;
 import org.mybatis.generator.api.dom.xml.Attribute;
@@ -49,7 +50,7 @@ public class CustomUpdateByPrimaryKeyWithoutBLOBsElementGenerator extends Abstra
 
             sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
             sb.append(" = ");
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
+            sb.append(ParameterGenerate.getInstance().getParameterClause(introspectedColumn,null));
 
             if (iter.hasNext()) {
                 sb.append(',');
@@ -76,7 +77,7 @@ public class CustomUpdateByPrimaryKeyWithoutBLOBsElementGenerator extends Abstra
 
             sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
             sb.append(" = ");
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
+            sb.append(ParameterGenerate.getInstance().getParameterClause(introspectedColumn,null));
             answer.addElement(new TextElement(sb.toString()));
         }
 

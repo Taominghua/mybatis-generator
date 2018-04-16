@@ -1,5 +1,6 @@
 package com.enterprise.generator.xmlmapper.elements;
 
+import com.enterprise.generator.common.ParameterGenerate;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.OutputUtilities;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -56,14 +57,14 @@ public class SelectByBeanWithoutBLOBsGenerator extends AbstractXmlElementGenerat
             if (needSpellEmptyStringJavaTypeList.contains(introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName())) {
                 ifElement.addAttribute(new Attribute("test ", introspectedColumn.getJavaProperty().concat(" != null")));
             } else if ("java.lang.String".equals(introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName())) {
-                ifElement.addAttribute(new Attribute("test ", introspectedColumn.getJavaProperty().concat(" != null AND " + introspectedColumn.getJavaProperty() + " != ''")));
+                ifElement.addAttribute(new Attribute("test ", introspectedColumn.getJavaProperty().concat(" != null and " + introspectedColumn.getJavaProperty() + " != ''")));
             } else {
                 ifElement.addAttribute(new Attribute("test ", introspectedColumn.getJavaProperty().concat(" != null")));
             }
             sb.append(" AND ");
             sb.append(MyBatis3FormattingUtilities.getAliasedEscapedColumnName(introspectedColumn));
             sb.append(" = ");
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn, ""));
+            sb.append(ParameterGenerate.getInstance().getParameterClause(introspectedColumn, ""));
 
             ifElement.addElement(new TextElement(sb.toString()));
             answer.addElement(ifElement);

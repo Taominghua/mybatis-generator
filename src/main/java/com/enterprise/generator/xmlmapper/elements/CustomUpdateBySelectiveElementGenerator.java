@@ -1,5 +1,6 @@
 package com.enterprise.generator.xmlmapper.elements;
 
+import com.enterprise.generator.common.ParameterGenerate;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
@@ -44,7 +45,7 @@ public class CustomUpdateBySelectiveElementGenerator extends AbstractXmlElementG
         sb.append(introspectedTable.getFullyQualifiedTableNameAtRuntime());
         answer.addElement(new TextElement(sb.toString()));
 
-        XmlElement dynamicElement = new XmlElement("SET");
+        XmlElement dynamicElement = new XmlElement("set");
         answer.addElement(dynamicElement);
 
         for (IntrospectedColumn introspectedColumn : ListUtilities.removeGeneratedAlwaysColumns(introspectedTable.getNonPrimaryKeyColumns())) {
@@ -57,7 +58,7 @@ public class CustomUpdateBySelectiveElementGenerator extends AbstractXmlElementG
             if (needSpellEmptyStringJavaTypeList.contains(introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName())) {
                 sb.append(introspectedColumn.getJavaProperty().concat(" != null"));
             } else if ("java.lang.String".equals(introspectedColumn.getFullyQualifiedJavaType().getFullyQualifiedName())) {
-                sb.append(introspectedColumn.getJavaProperty().concat(" != null AND " + introspectedColumn.getJavaProperty() + " != ''"));
+                sb.append(introspectedColumn.getJavaProperty().concat(" != null and " + introspectedColumn.getJavaProperty() + " != ''"));
             } else {
                 sb.append(introspectedColumn.getJavaProperty().concat(" != null"));
             }
@@ -69,7 +70,7 @@ public class CustomUpdateBySelectiveElementGenerator extends AbstractXmlElementG
             sb.setLength(0);
             sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
             sb.append(" = ");
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
+            sb.append(ParameterGenerate.getInstance().getParameterClause(introspectedColumn,null));
             sb.append(',');
 
             isNotNullElement.addElement(new TextElement(sb.toString()));
@@ -87,7 +88,7 @@ public class CustomUpdateBySelectiveElementGenerator extends AbstractXmlElementG
 
             sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
             sb.append(" = ");
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
+            sb.append(ParameterGenerate.getInstance().getParameterClause(introspectedColumn,null));
             answer.addElement(new TextElement(sb.toString()));
         }
 

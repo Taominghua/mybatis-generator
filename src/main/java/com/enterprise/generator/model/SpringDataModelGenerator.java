@@ -80,7 +80,7 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
             Field field = getJavaBeansField(introspectedColumn);
             switch (field.getType().getShortName()) {
                 case "Integer":
-                    field.setType(FullyQualifiedJavaType.getIntInstance());
+                    field.setType(new FullyQualifiedJavaType("Integer"));
                     addNumberValidate(topLevelClass, field, introspectedColumn);
                     break;
                 case "String":
@@ -93,7 +93,6 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
                     break;
                 case "Date":
                     //如果对于Date操作工具类够强大的话，建议使用原声的Date
-//                    field.setType(new FullyQualifiedJavaType("java.time.LocalDateTime"));
                     field.setType(new FullyQualifiedJavaType("java.util.Date"));
                     break;
                 default:
@@ -101,7 +100,7 @@ public class SpringDataModelGenerator extends AbstractJavaGenerator {
 
             String remarks = introspectedColumn.getRemarks();
             if (Boolean_Matcher.matcher(remarks).find()) {
-                field.setType(FullyQualifiedJavaType.getBooleanPrimitiveInstance());
+                field.setType(new FullyQualifiedJavaType("Boolean"));
             } else {
                 Matcher matcher = Enumerate_Matcher.matcher(remarks);
                 if (matcher.find()) {

@@ -1,5 +1,6 @@
 package com.enterprise.generator.xmlmapper.elements;
 
+import com.enterprise.generator.common.ParameterGenerate;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
@@ -54,7 +55,7 @@ public class CustomDeleteByPrimaryKeyElementGenerator extends AbstractXmlElement
 
             sb.append(MyBatis3FormattingUtilities.getEscapedColumnName(introspectedColumn));
             sb.append(" = ");
-            sb.append(MyBatis3FormattingUtilities.getParameterClause(introspectedColumn));
+            sb.append(ParameterGenerate.getInstance().getParameterClause(introspectedColumn,null));
             answer.addElement(new TextElement(sb.toString()));
         }
 
